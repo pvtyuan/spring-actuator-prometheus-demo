@@ -17,15 +17,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestController
 public class DemoController {
 
-    // 需设置service_name和ip这两个label
-    private final MeterRegistry meterRegistry;
     private Counter counter;
     private DistributionSummary distributionSummary;
     private AtomicInteger unsavedRequestCount = new AtomicInteger();
     private Random random;
 
     public DemoController(MeterRegistry meterRegistry) {
-        this.meterRegistry = meterRegistry;
         this.counter = Counter.builder("requests").register(meterRegistry);
         Gauge.builder("unsaved_requests", unsavedRequestCount, AtomicInteger::get).register(meterRegistry);
         // 这里的70，80，90是bucket的分界线
